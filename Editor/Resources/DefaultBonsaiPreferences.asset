@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74eaa86d2886dff4f8002e3b6566ccbe, type: 3}
+  m_Name: DefaultBonsaiPreferences
+  m_EditorClassIdentifier: 
+  snapStep: 12
+  zoomDelta: 0.2
+  minZoom: 1
+  maxZoom: 5
+  panSpeed: 1.2
+  m_GridTexture: {fileID: 0}
+  m_FailureSymbol: {fileID: 0}
+  m_SuccessSymbol: {fileID: 0}
+  m_BreakPoint: {fileID: 0}
+  m_NodeBackgroundTexture: {fileID: 0}
+  m_NodeGradient: {fileID: 0}
+  m_PortTexture: {fileID: 0}
+  compositeColor: {r: 0.37, g: 0.37, b: 0.37, a: 1}
+  decoratorColor: {r: 0.45, g: 0.38, b: 0.72, a: 1}
+  conditionalColor: {r: 0.36, g: 0.72, b: 0.72, a: 1}
+  serviceColor: {r: 0.99, g: 0.61, b: 0.13, a: 1}
+  taskColor: {r: 0.59, g: 0.64, b: 0.53, a: 1}
+  defaultNodeBackgroundColor: {r: 0.29, g: 0.29, b: 0.29, a: 1}
+  selectedColor: {r: 0.34, g: 0.62, b: 1, a: 1}
+  runningColor: {r: 0.29, g: 1, b: 0.61, a: 1}
+  abortColor: {r: 0.37, g: 0.88, b: 0.77, a: 1}
+  referenceColor: {r: 1, g: 0.77, b: 0.03, a: 1}
+  evaluateColor: {r: 0, g: 0.43, b: 1, a: 1}
+  rootSymbolColor: {r: 0.9, g: 1, b: 0, a: 1}
+  runningStatusColor: {r: 0.1, g: 1, b: 0.54, a: 1}
+  successColor: {r: 0.1, g: 1, b: 0.54, a: 0.25}
+  failureColor: {r: 1, g: 0.1, b: 0.1, a: 0.25}
+  abortedColor: {r: 0.1, g: 0.1, b: 1, a: 0.25}
+  interruptedColor: {r: 0.7, g: 0.5, b: 0.3, a: 0.4}
+  defaultConnectionColor: {r: 1, g: 1, b: 1, a: 1}
+  defaultConnectionWidth: 4
+  runningConnectionWidth: 4
+  nodeSizePadding: {x: 12, y: 6}
+  nodeWidthPadding: 12
+  portHeight: 20
+  portWidthTrim: 50
+  iconSize: 32
+  statusIconSize: 16

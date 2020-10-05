@@ -1,0 +1,26 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace Bonsai
+{
+    [BTNode("Composites/", "Editor_Arrow")]
+    public class Sequence : BTComposite
+    {
+        public override EStatus Run()
+        {
+            if (lastChildExitStatus == EStatus.Failure) return EStatus.Failure;
+
+            var next = CurrentChild();
+
+            if (next == null)
+            {
+                return EStatus.Success;
+            }
+            else
+            {
+                Iterator.Traverse(next);
+                return EStatus.Running;
+            }
+        }
+    }
+}
