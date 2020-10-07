@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Bonsai
+namespace Saro.BT
 {
     public static class TreeTraversal
     {

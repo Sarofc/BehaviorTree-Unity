@@ -4,7 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Bonsai.Designer
+namespace Saro.BT.Designer
 {
     public class BonsaiViewer
     {
@@ -174,10 +174,10 @@ namespace Bonsai.Designer
             {
                 return Preferences.selectedColor;
             }
-            else if (NodeSelection.IsReferenced(node))
-            {
-                return Preferences.referenceColor;
-            }
+            //else if (NodeSelection.IsReferenced(node))
+            //{
+            //    return Preferences.referenceColor;
+            //}
             else if (abortableSelected.Contains(node))
             {
                 return Preferences.abortColor;
@@ -186,7 +186,7 @@ namespace Bonsai.Designer
             {
                 return Preferences.rootSymbolColor;
             }
-            
+
             return Preferences.defaultNodeBackgroundColor;
         }
 
@@ -206,7 +206,7 @@ namespace Bonsai.Designer
 
             if (itr != null && itr.IsRunning)
             {
-                var aborter = behaviour as BTConditionalAbort;
+                var aborter = behaviour as BTDecorator;
                 return aborter && aborter.IsObserving;
             }
 
@@ -217,7 +217,7 @@ namespace Bonsai.Designer
         {
             abortableSelected.Clear();
 
-            var aborter = node.Behaviour as BTConditionalAbort;
+            var aborter = node.Behaviour as BTDecorator;
             if (aborter)
             {
                 abortableSelected = new HashSet<BonsaiNode>(Abortables(node, aborter.abortType));

@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace Bonsai.Designer
+namespace Saro.BT.Designer
 {
     /// <summary>
     /// Provides utilities to draw elements in the editor.
@@ -181,12 +181,12 @@ namespace Bonsai.Designer
                 return BonsaiPreferences.Instance.serviceColor;
             }
 
-            else if (node.Behaviour is BTConditionalAbort)
+            else if (node.Behaviour is BTDecorator)
             {
                 return BonsaiPreferences.Instance.conditionalColor;
             }
 
-            else if (node.Behaviour is BTDecorator)
+            else if (node.Behaviour is BTAuxiliary)
             {
                 return BonsaiPreferences.Instance.decoratorColor;
             }

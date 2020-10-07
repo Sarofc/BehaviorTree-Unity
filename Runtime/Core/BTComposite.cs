@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace Bonsai
+namespace Saro.BT
 {
     public abstract class BTComposite : BTNode
     {
@@ -78,10 +78,6 @@ namespace Bonsai
             return children != null && children.Length > 0;
         }
 
-        public override string OnError(StringBuilder text)
-        {
-            return "children length should greater than zero.";
-        }
     }
 
 }

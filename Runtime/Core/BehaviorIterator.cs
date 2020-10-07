@@ -1,10 +1,10 @@
-﻿#define BT_DEBUG_ENABLE
+﻿//#define BT_DEBUG_ENABLE
 
 using System;
 using System.Collections.Generic;
-using Bonsai.Utility;
+using Saro.BT.Utility;
 
-namespace Bonsai
+namespace Saro.BT
 {
 
     public sealed class BehaviorIterator

@@ -1,27 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
+using Saro.BT.Utility;
 
-namespace Bonsai
+namespace Saro.BT
 {
     [BTNode("Decorator/", "Editor_Condition")]
-    public sealed class Cooldown : BTConditionalAbort
+    public sealed class Cooldown : BTDecorator
     {
         [BTRunTimeValue]
         public Timer timer = new Timer();
 
-#if UNITY_EDITOR
-        private void OnEnable()
+        private void OnValidate()
         {
             if (abortType == AbortType.Self || abortType == AbortType.Both)
                 abortType = AbortType.LowerPriority;
         }
-#endif
 
         public override void OnStart()
         {
-            if (abortType == AbortType.Self || abortType == AbortType.Both)
-                abortType = AbortType.LowerPriority;
+            OnValidate();
 
             timer.OnTimeout += RemoveOnTimeout;
         }
@@ -103,7 +99,7 @@ namespace Bonsai
         {
             base.Description(builder);
             builder.AppendLine();
-            builder.AppendFormat("Lock execution for {0:0.00}s", timer.interval);
+            builder.AppendFormat("Lock execution for {0:0.00}s", timer.GetIntervalInfo());
         }
     }
 

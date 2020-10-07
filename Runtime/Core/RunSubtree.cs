@@ -2,7 +2,7 @@
 using System.Text;
 using UnityEngine;
 
-namespace Bonsai
+namespace Saro.BT
 {
     [BTNode("Tasks/", "Editor_TreeIcon")]
     public sealed class RunSubtree : Task

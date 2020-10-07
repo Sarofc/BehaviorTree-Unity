@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Bonsai
+namespace Saro.BT
 {
     [BTNode("Composites/", "Editor_Arrow")]
     public class Sequence : BTComposite

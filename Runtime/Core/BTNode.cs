@@ -4,32 +4,58 @@ using System.Text;
 
 using UnityEngine;
 
-namespace Bonsai
+namespace Saro.BT
 {
     public abstract class BTNode : ScriptableObject, IIterableNode<BTNode>
     {
+        /// <summary>
+        /// 节点运行状态
+        /// </summary>
         public enum EStatus : byte
         {
-            Success = 1,
+            Success,
             Failure,
             Running
         }
 
         public const int kInvalidOrder = -1;
 
-        internal BehaviorTree treeOwner = null;
-
-        internal int preOrderIndex = kInvalidOrder;
-
-        internal int postOrderIndex = 0;
-        internal int levelOrder = 0;
-
-        public BTNode Parent { get; internal set; }
-        public BehaviorIterator Iterator { get; internal set; }
+        /// <summary>
+        /// 树
+        /// </summary>
+        public BehaviorTree Tree => treeOwner;
 
         /// <summary>
         /// the order of the node relative to its parent.
         /// </summary>
+        public int ChildOrder => childOrder;
+
+        public int PreOrderIndex => preOrderIndex;
+
+        public int LevelOrder => levelOrder;
+
+        protected Blackboard Blackboard => treeOwner.blackboard;
+
+        protected object Actor => treeOwner.actor;
+
+        internal BehaviorTree treeOwner = null;
+
+        internal int preOrderIndex = kInvalidOrder;
+
+        //internal int postOrderIndex = 0;
+
+
+        internal int levelOrder = 0;
+
+        public BTNode Parent { get; internal set; }
+
+        /// <summary>
+        /// node iterator。see
+        /// <see cref="BehaviorIterator"/>
+        /// <see cref="BehaviorTree"/>
+        /// </summary>
+        public BehaviorIterator Iterator { get; internal set; }
+
         protected internal int childOrder = 0;
 
         /// <summary>
@@ -55,6 +81,10 @@ namespace Bonsai
 
         public virtual float UtilityValue() { return 0f; }
 
+        /// <summary>
+        /// called when iterator abort
+        /// </summary>
+        /// <param name="childIndex"></param>
         public virtual void OnAbort(int childIndex) { }
 
         public virtual void OnChildEnter(int childIndex) { }
@@ -63,25 +93,22 @@ namespace Bonsai
 
         public virtual void OnCompositeParentExit() { }
 
-        public virtual void OnCopy() { }
-
+        /// <summary>
+        /// check node is valid or not
+        /// </summary>
+        /// <returns></returns>
         public virtual bool IsValid() { return true; }
 
-        public virtual string OnError(StringBuilder builder) { return null; }
+        /// <summary>
+        /// get error string. will be usefull with 
+        /// <see cref="IsValid"/>
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
+        public virtual void Error(StringBuilder builder) { }
 
+        [System.Obsolete("use for guard/Interruptor node, but these nodes are not supported.")]
         public virtual BTNode[] GetReferencedNodes() { return null; }
-
-        public BehaviorTree Tree => treeOwner;
-
-        public int ChildOrder => childOrder;
-
-        public int PreOrderIndex => preOrderIndex;
-
-        public int LevelOrder => levelOrder;
-
-        protected Blackboard Blackboard => treeOwner.blackboard;
-
-        protected object Actor => treeOwner.actor;
 
         public abstract BTNode GetChildAt(int index);
 
@@ -109,10 +136,7 @@ namespace Bonsai
             return MaxChildCount() == 0;
         }
 
-        public virtual void Description(StringBuilder builder)
-        {
-
-        }
+        public virtual void Description(StringBuilder builder) { }
 
         public override string ToString()
         {

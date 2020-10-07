@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace Bonsai
+using Saro.BT.Utility;
+
+namespace Saro.BT
 {
 
     [BTNode("Tasks/", "Editor_Timer")]
@@ -26,7 +28,7 @@ namespace Bonsai
 
         public override void Description(StringBuilder builder)
         {
-            builder.AppendFormat("Wait for {0:0.00}s", timer.interval);
+            builder.AppendFormat("Wait for {0:0.00}s", timer.GetIntervalInfo());
         }
     }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 //using Bonsai.Core;
 
-namespace Bonsai.Tests
+namespace Saro.BT.Tests
 {
     public class TestNode : Task
     {

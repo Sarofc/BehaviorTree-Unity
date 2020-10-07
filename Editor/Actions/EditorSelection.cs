@@ -6,14 +6,14 @@ using System.Linq;
 //using Bonsai.Core;
 using UnityEditor;
 
-namespace Bonsai.Designer
+namespace Saro.BT.Designer
 {
     public class EditorSelection : IReadOnlySelection
     {
         public event EventHandler<BonsaiNode> SingleSelected;
 
         private readonly List<BonsaiNode> selectedNodes = new List<BonsaiNode>();
-        private readonly List<BTNode> referencedNodes = new List<BTNode>();
+        //private readonly List<BTNode> referencedNodes = new List<BTNode>();
 
         /// <summary>
         /// The currently selected nodes.
@@ -23,7 +23,7 @@ namespace Bonsai.Designer
         /// <summary>
         /// Referenced nodes of the current selection.
         /// </summary>
-        public IReadOnlyList<BTNode> Referenced { get { return referencedNodes; } }
+        //public IReadOnlyList<BTNode> Referenced { get { return referencedNodes; } }
 
         /// <summary>
         /// The single selected node.
@@ -69,7 +69,7 @@ namespace Bonsai.Designer
 #endif
             Selection.activeObject = newSingleSelected.Behaviour;
             SingleSelected?.Invoke(this, newSingleSelected);
-            SelectReferencedNodes(newSingleSelected);
+            //SelectReferencedNodes(newSingleSelected);
         }
 
         public void ToggleSelecion(BonsaiNode node)
@@ -89,7 +89,7 @@ namespace Bonsai.Designer
                 Selection.objects = null;
                 Selection.activeObject = selectedNode.Behaviour;
                 SingleSelected?.Invoke(this, selectedNode);
-                SelectReferencedNodes(selectedNode);
+                //SelectReferencedNodes(selectedNode);
             }
 
             else if (IsMultiSelection)
@@ -100,7 +100,7 @@ namespace Bonsai.Designer
 
         public void SetTreeSelection(BehaviorTree tree)
         {
-            referencedNodes.Clear();
+            //referencedNodes.Clear();
             ClearSelection();
             Selection.activeObject = tree;
         }
@@ -147,25 +147,26 @@ namespace Bonsai.Designer
             get { return SelectedNodes.Count > 1; }
         }
 
-        [Pure]
-        public bool IsReferenced(BonsaiNode node)
-        {
-            return Referenced.Contains(node.Behaviour);
-        }
+        //[Pure]
+        //public bool IsReferenced(BonsaiNode node)
+        //{
+        //    return Referenced.Contains(node.Behaviour);
+        //}
 
-        private void SelectReferencedNodes(BonsaiNode node)
-        {
-            SetReferenced(node.Behaviour);
-        }
+        //[System.Obsolete("interrupter/guard node is not supported.")]
+        //private void SelectReferencedNodes(BonsaiNode node)
+        //{
+        //    SetReferenced(node.Behaviour);
+        //}
 
-        public void SetReferenced(BTNode node)
-        {
-            referencedNodes.Clear();
-            BTNode[] refs = node.GetReferencedNodes();
-            if (refs != null && refs.Length != 0)
-            {
-                referencedNodes.AddRange(refs);
-            }
-        }
+        //public void SetReferenced(BTNode node)
+        //{
+        //    referencedNodes.Clear();
+        //    BTNode[] refs = node.GetReferencedNodes();
+        //    if (refs != null && refs.Length != 0)
+        //    {
+        //        referencedNodes.AddRange(refs);
+        //    }
+        //}
     }
 }

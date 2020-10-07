@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 //using Bonsai.Core;
-using Bonsai.Utility;
+using Saro.BT.Utility;
 using UnityEditor;
 using UnityEngine;
 
-namespace Bonsai.Designer
+namespace Saro.BT.Designer
 {
     /// <summary>
     /// The editor applies changes to the canvas.
@@ -186,18 +186,18 @@ namespace Bonsai.Designer
             else if (inputEvent.IsNodeFocused())
             {
                 // Apply node linking.
-                if (!NodeSelection.IsEmpty && Event.current.shift)
-                {
-                    //BonsaiNode sourceLink = NodeSelection.FirstNodeSelected;
-                    //BonsaiNode nodeToLink = inputEvent.node;
-                    //if (EditorNodeLinking.ApplyLink(sourceLink.Behaviour, nodeToLink.Behaviour))
-                    //{
-                    //  NodeSelection.SetReferenced(sourceLink.Behaviour);
-                    //}
-                }
+                //if (!NodeSelection.IsEmpty && Event.current.shift)
+                //{
+                //BonsaiNode sourceLink = NodeSelection.FirstNodeSelected;
+                //BonsaiNode nodeToLink = inputEvent.node;
+                //if (EditorNodeLinking.ApplyLink(sourceLink.Behaviour, nodeToLink.Behaviour))
+                //{
+                //  NodeSelection.SetReferenced(sourceLink.Behaviour);
+                //}
+                //}
 
                 // Extended selection mode.
-                else if (Event.current.control)
+                if (Event.current.control)
                 {
                     NodeSelection.ToggleSelecion(inputEvent.node);
                 }
@@ -511,9 +511,9 @@ namespace Bonsai.Designer
                 return typeof(BTComposite);
             }
 
-            if (behaviour is BTDecorator)
+            if (behaviour is BTAuxiliary)
             {
-                return typeof(BTDecorator);
+                return typeof(BTAuxiliary);
             }
 
             return typeof(Task);

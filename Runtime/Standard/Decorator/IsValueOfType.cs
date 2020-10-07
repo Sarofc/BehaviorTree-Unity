@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace Bonsai
+namespace Saro.BT
 {
     [BTNode("Decorator/")]
-    public class IsValueOfType : BTConditionalAbort, ISerializationCallbackReceiver
+    public class IsValueOfType : BTDecorator, ISerializationCallbackReceiver
     {
         [Tooltip("the key of the value to test its type.")]
         public string key;
@@ -73,7 +73,7 @@ namespace Bonsai
             }
             else
             {
-                builder.AppendFormat("Blackboard key {0} is {1}", key, Bonsai.Utility.TypeExtensions.NiceName(type));
+                builder.AppendFormat("Blackboard key {0} is {1}", key, Saro.BT.Utility.TypeExtensions.NiceName(type));
             }
         }
     }

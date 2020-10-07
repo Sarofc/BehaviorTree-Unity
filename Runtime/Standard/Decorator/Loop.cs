@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace Bonsai
+namespace Saro.BT
 {
     [BTNode("Decorator/", "Editor_RepeatArrow")]
     public sealed class Loop : BTDecorator

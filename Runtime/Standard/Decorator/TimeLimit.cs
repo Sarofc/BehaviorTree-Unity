@@ -1,27 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Saro.BT.Utility;
 
-namespace Bonsai
+namespace Saro.BT
 {
     [BTNode("Decorator/", "Editor_Condition")]
-    public class TimeLimit : BTConditionalAbort
+    public class TimeLimit : BTDecorator
     {
         [BTRunTimeValue]
         public Timer timer = new Timer();
 
-#if UNITY_EDITOR
-        void OnEnable()
+        private void OnValidate()
         {
             abortType = AbortType.Self;
         }
-#endif
 
         public override void OnStart()
         {
-            timer.OnTimeout += Evaluate;
+            OnValidate();
 
-            abortType = AbortType.Self; // only abort self
+            timer.OnTimeout += Evaluate;
         }
 
         public override void OnEnter()
@@ -45,7 +44,7 @@ namespace Bonsai
         {
             base.Description(builder);
             builder.AppendLine();
-            builder.AppendFormat("About and fail after {0:0.00}s", timer.interval);
+            builder.AppendFormat("About and fail after {0:0.00}s", timer.GetIntervalInfo());
         }
     }
 

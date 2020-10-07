@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
 
-namespace Bonsai.Designer
+namespace Saro.BT.Designer
 {
     public class BonsaiWindow : EditorWindow
     {

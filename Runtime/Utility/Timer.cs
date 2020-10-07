@@ -2,54 +2,70 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
-public class Timer
+namespace Saro.BT.Utility
 {
-    [Min(0)]
-    public float interval = 1f;
-
-    [Tooltip("Adds a random range value to the interval between [-Deviation, +Deviation]")]
-    [Min(0)]
-    public float deviation = 0.1f;
-
-    public float TTL { get; private set; } = 0f;
-    public bool AutoRestart { get; set; } = false;
-
-    public event Action OnTimeout;
-
-    public void Start()
+    [Serializable]
+    public class Timer
     {
-        TTL = interval;
+        [Min(0)]
+        public float interval = 1f;
 
-        if (deviation > 0.033f)
-        {
-            TTL += UnityEngine.Random.Range(-deviation, deviation);
-        }
-    }
+        [Tooltip("Adds a random range value to the interval between [-Deviation, +Deviation]")]
+        [Min(0)]
+        public float deviation = 0.1f;
 
-    public void Tick(float delta)
-    {
-        if (TTL > 0f)
+        public float TTL { get; private set; } = 0f;
+        public bool AutoRestart { get; set; } = false;
+
+        public event Action OnTimeout;
+
+        public void Start()
         {
-            TTL -= delta;
-            if (IsDone)
+            TTL = interval;
+
+            if (deviation > 0.033f)
             {
-                OnTimeout?.Invoke();
-                if (AutoRestart)
+                TTL += UnityEngine.Random.Range(-deviation, deviation);
+            }
+        }
+
+        public void Tick(float delta)
+        {
+            if (TTL > 0f)
+            {
+                TTL -= delta;
+                if (IsDone)
                 {
-                    Start();
+                    OnTimeout?.Invoke();
+                    if (AutoRestart)
+                    {
+                        Start();
+                    }
                 }
             }
         }
+
+        public bool IsDone => TTL <= 0f;
+
+        public bool IsRunning => !IsDone;
+
+        /// <summary>
+        /// for 
+        /// <see cref="BTRunTimeValueAttribute"/>
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return TTL.ToString();
+        }
+
+        public string GetIntervalInfo()
+        {
+            if (deviation > 0.033f)
+                return $"{interval}±{deviation}";
+            else
+                return interval.ToString();
+        }
     }
 
-    public bool IsDone => TTL <= 0f;
-
-    public bool IsRunning => !IsDone;
-
-    public override string ToString()
-    {
-        return TTL.ToString();
-    }
 }
-

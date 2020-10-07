@@ -6,7 +6,7 @@ using UnityEditor;
 //using Bonsai.Core;
 using UnityEngine;
 
-namespace Bonsai.Designer
+namespace Saro.BT.Designer
 {
     /// <summary>
     /// The canvas holds the nodes of the behaviour tree.
@@ -16,7 +16,7 @@ namespace Bonsai.Designer
         private readonly List<BonsaiNode> nodes = new List<BonsaiNode>();
         public IReadOnlyList<BonsaiNode> Nodes { get { return nodes; } }
         public BonsaiNode Root { get; private set; }
-        public BehaviorTree Tree { get; }
+        public BehaviorTree Tree { get; private set; }
 
         /// <summary>
         /// Builds the canvas given the behaviour tree.
@@ -155,8 +155,9 @@ namespace Bonsai.Designer
         // Creates and adds an editor node to the canvas.
         private BonsaiNode AddEditorNode(bool hasOutput, Texture icon = null)
         {
-            var node = new BonsaiNode(hasOutput, icon);
+            var node = BonsaiNode.Create(hasOutput, icon);
             nodes.Add(node);
+
             return node;
         }
 

@@ -2,7 +2,7 @@
 //using Bonsai.Core;
 //using Bonsai.Standard;
 
-namespace Bonsai.Tests
+namespace Saro.BT.Tests
 {
   public class CoreTreeTests
   {

@@ -1,6 +1,8 @@
 ﻿
 
-namespace Bonsai
+using System.Text;
+
+namespace Saro.BT
 {
     [BTNode("Composites/", "Editor_Question")]
     public class Selector : BTComposite
@@ -23,6 +25,16 @@ namespace Bonsai
                 Iterator.Traverse(nextChild);
                 return EStatus.Running;
             }
+        }
+
+        public override void Description(StringBuilder builder)
+        {
+            base.Description(builder);
+        }
+
+        public override void Error(StringBuilder builder)
+        {
+            builder.AppendLine("<color=red>Children must greater than 0.</color>");
         }
     }
 

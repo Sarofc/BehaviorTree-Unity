@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using System.Text;
 
-namespace Bonsai
+namespace Saro.BT
 {
     [BTNode("Composites/", "Editor_Parallel")]
     public sealed class SimpleParallel : BTComposite
@@ -95,20 +95,21 @@ namespace Bonsai
             return EStatus.Running;
         }
 
-        public override void Description(StringBuilder builder)
-        {
-            base.Description(builder);
-            builder.Append("FinishMode: ").Append(finishMode);
-        }
-
         public override bool IsValid()
         {
             return Children != null && Children.Length == 2;
         }
 
-        public override string OnError(StringBuilder builder)
+        public override void Error(StringBuilder builder)
         {
-            return "SimpleParallel's children should equal to 2.";
+            builder.AppendLine("<color=red>Children must equal to 2.</color>");
         }
+
+        public override void Description(StringBuilder builder)
+        {
+            base.Description(builder);
+            builder.Append("FinishMode: ").Append(finishMode).AppendLine();
+        }
+
     }
 }

@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Bonsai
+namespace Saro.BT
 {
     [BTNode("Decorator/", "Editor_SmallCross")]
-    public class ForceSuccess : BTDecorator
+    public sealed class ForceFailure : BTDecorator
     {
         public override EStatus Run()
         {
-            return EStatus.Success;
+            return EStatus.Failure;
         }
 
         public override void Description(StringBuilder builder)
         {
-            builder.Append("Always successful");
+            builder.Append("Always fail");
         }
     }
 }

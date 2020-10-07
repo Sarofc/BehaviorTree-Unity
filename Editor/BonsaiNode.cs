@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Text;
 //using Bonsai.Core;
-using Bonsai.Utility;
+using Saro.BT.Utility;
 using UnityEditor;
 using UnityEngine;
 
 using Object = UnityEngine.Object;
 
-namespace Bonsai.Designer
+namespace Saro.BT.Designer
 {
-    public class BonsaiNode : IIterableNode<BonsaiNode>
+    public class BonsaiNode : ScriptableObject, IIterableNode<BonsaiNode>
     {
         private static StringBuilder s_Text = new StringBuilder(1024);
 
@@ -28,8 +28,8 @@ namespace Bonsai.Designer
         private Rect contentRect;
         public Rect ContentRect { get { return contentRect; } }
 
-        public GUIStyle HeaderStyle { get; } = CreateHeaderStyle();
-        public GUIStyle BodyStyle { get; } = CreateBodyStyle();
+        public GUIStyle HeaderStyle { get; private set; } //= CreateHeaderStyle();
+        public GUIStyle BodyStyle { get; private set; } //= CreateBodyStyle();
         private GUIStyle preOrderIndexStyle;
         public GUIStyle PreOrderIndexStyle
         {
@@ -47,7 +47,7 @@ namespace Bonsai.Designer
         public GUIContent HeaderContent { get; } = new GUIContent();
         public GUIContent BodyContent { get; } = new GUIContent();
 
-        public bool HasOutput { get; }
+        public bool HasOutput { get; private set; }
 
         private BTNode behaviour;
 
@@ -61,19 +61,6 @@ namespace Bonsai.Designer
             }
         }
 
-        /// <summary>
-        /// Create a new node for the first time.
-        /// </summary>
-        /// <param name="hasOutput">If the node should have an output.</param>
-        public BonsaiNode(bool hasOutput, Texture icon = null)
-        {
-            HasOutput = hasOutput;
-
-            if (icon)
-            {
-                HeaderContent.image = icon;
-            }
-        }
 
         public Vector2 Position
         {
@@ -146,6 +133,30 @@ namespace Bonsai.Designer
                 var size = BonsaiPreferences.Instance.statusIconSize * 2f;
                 return new Rect(contentRect.xMax - size * 0.4f, contentRect.yMin - size * 0.4f, size, size);
             }
+        }
+
+        private void OnEnable()
+        {
+            HeaderStyle = CreateHeaderStyle();
+            BodyStyle = CreateBodyStyle();
+        }
+
+
+        /// <summary>
+        /// Create a new node for the first time.
+        /// </summary>
+        /// <param name="hasOutput">If the node should have an output.</param>
+        public static BonsaiNode Create(bool hasOutput, Texture icon = null)
+        {
+            var node = ScriptableObject.CreateInstance<BonsaiNode>();
+            node.HasOutput = hasOutput;
+
+            if (icon)
+            {
+                node.HeaderContent.image = icon;
+            }
+
+            return node;
         }
 
         public void SetBehaviour(BTNode newBehaviour, Texture icon)
@@ -221,7 +232,7 @@ namespace Bonsai.Designer
                     newParent.children.Add(this);
                 }
 
-                else if (newParent.behaviour is BTDecorator)
+                else if (newParent.behaviour is BTAuxiliary)
                 {
                     // Replace single child.
                     newParent.OrphanChildren();
@@ -340,6 +351,12 @@ namespace Bonsai.Designer
                 s_Text.AppendLine();
                 s_Text.AppendLine();
                 s_Text.Append(behaviour.comment);
+            }
+
+            if (!behaviour.IsValid())
+            {
+                s_Text.AppendLine();
+                behaviour.Error(s_Text);
             }
 
             return s_Text.ToString();

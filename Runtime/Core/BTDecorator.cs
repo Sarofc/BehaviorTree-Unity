@@ -1,56 +1,134 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Text;
 
-namespace Bonsai
+namespace Saro.BT
 {
-    public abstract class BTDecorator : BTNode
+    public enum AbortType { None, LowerPriority, Self, Both }
+
+    public abstract class BTDecorator : BTAuxiliary
     {
-        [SerializeField]
-        protected BTNode child;
+        public AbortType abortType = AbortType.None;
 
-        protected BTNode Child => child;
-
-        public void SetChild(BTNode node)
-        {
-            child = node;
-            if (child != null)
-            {
-                child.Parent = this;
-                child.childOrder = 0;
-            }
-        }
+        public bool IsObserving { get; protected set; } = false;
+        protected bool IsActive { get; set; } = false;
 
         public override void OnEnter()
         {
-            if (child) Iterator.Traverse(child);
-        }
+            IsActive = true;
 
-        public sealed override void OnAbort(int childIndex)
-        {
-        }
-
-        public override void OnCompositeParentExit()
-        {
-            if (child != null && child.IsDecorator())
+            if (abortType != AbortType.None)
             {
-                child.OnCompositeParentExit();
+                if (!IsObserving)
+                {
+                    IsObserving = true;
+                    OnObserverBegin();
+                }
+            }
+
+            if (Condition())
+            {
+                base.OnEnter();
             }
         }
 
-        public sealed override BTNode GetChildAt(int index)
+        public override void OnExit()
         {
-            return child;
+            if (IsObserving)
+            {
+                if (abortType == AbortType.None || abortType == AbortType.Self)
+                {
+                    OnObserverEnd();
+                }
+                IsObserving = false;
+            }
+
+            IsActive = false;
         }
 
-        public sealed override int ChildCount()
+        public sealed override void OnCompositeParentExit()
         {
-            return child != null ? 1 : 0;
+            if (IsObserving)
+            {
+                IsObserving = false;
+                OnObserverEnd();
+            }
+
+            base.OnCompositeParentExit();
         }
 
-        public sealed override int MaxChildCount()
+        public override EStatus Run()
         {
-            return 1;
+            return Iterator.LastChildExitStatus.GetValueOrDefault(EStatus.Failure);
+        }
+
+
+        public virtual bool Condition() { return true; }
+
+
+        protected void Evaluate()
+        {
+            var result = Condition();
+
+            if (IsActive && !result)
+            {
+                AbortCurrentBranch();
+            }
+            else
+            {
+                AbortLowerPriorityBranch();
+            }
+        }
+
+        private void AbortLowerPriorityBranch()
+        {
+            if (abortType == AbortType.LowerPriority || abortType == AbortType.Both)
+            {
+                GetCompositeParent(this, out BTNode compositeParent, out int branchIndex);
+                if (compositeParent != null)
+                {
+                    if (compositeParent is BTComposite _composite)
+                    {
+                        bool isLowerPriority = _composite.CurrentChildIndex > branchIndex;
+                        if (isLowerPriority)
+                        {
+                            Iterator.AbortRunningChildBranch(compositeParent, branchIndex);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void AbortCurrentBranch()
+        {
+            if (abortType == AbortType.Self || abortType == AbortType.Both)
+            {
+                Iterator.AbortRunningChildBranch(Parent, ChildOrder);
+            }
+        }
+
+        /// <summary>
+        /// find parent composite node
+        /// </summary>
+        /// <param name="child"></param>
+        /// <param name="compositeParent"></param>
+        /// <param name="branchIndex"></param>
+        private void GetCompositeParent(BTNode child, out BTNode compositeParent, out int branchIndex)
+        {
+            compositeParent = child.Parent;
+            branchIndex = child.childOrder;
+
+            while (compositeParent != null && !compositeParent.IsComposite())
+            {
+                branchIndex = compositeParent.childOrder;
+                compositeParent = compositeParent.Parent;
+            }
+        }
+
+        public override void Description(StringBuilder builder)
+        {
+            base.Description(builder);
+            builder.AppendFormat("Aborts {0}", abortType.ToString());
         }
     }
 

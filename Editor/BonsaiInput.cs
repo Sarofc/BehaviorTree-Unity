@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Bonsai.Designer
+namespace Saro.BT.Designer
 {
     /// <summary>
     /// Emits inputs events for the editor.
@@ -315,7 +315,7 @@ namespace Bonsai.Designer
 
         private void PopulateDecoratorNodes(GenericMenu menu, BonsaiNode node)
         {
-            var decorators = BonsaiEditor.RegisteredBehaviourNodeTypes.Where(t => t.IsSubclassOf(typeof(BTDecorator)) && !t.IsAbstract);
+            var decorators = BonsaiEditor.RegisteredBehaviourNodeTypes.Where(t => t.IsSubclassOf(typeof(BTAuxiliary)) && !t.IsAbstract);
             foreach (var subclass in decorators)
             {
                 menu.AddItem(new GUIContent("Decorator/" + subclass.Name), false, () =>

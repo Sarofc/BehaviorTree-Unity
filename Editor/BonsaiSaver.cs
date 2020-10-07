@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Bonsai.Designer
+namespace Saro.BT.Designer
 {
     using FilePanelResult = Utility.Result<FilePanelError, string>;
 
@@ -197,8 +197,8 @@ namespace Bonsai.Designer
             foreach (BonsaiNode node in decoratorNodes)
             {
                 //Debug.LogError(node.Behaviour.name);
-                var decoratorBehaviour = node.Behaviour as BTDecorator;
-                decoratorBehaviour.SetChild(node.GetChildAt(0).Behaviour);
+                var auxNode = node.Behaviour as BTAuxiliary;
+                auxNode.SetChild(node.GetChildAt(0).Behaviour);
             }
         }
 
@@ -276,7 +276,6 @@ namespace Bonsai.Designer
             return absolutePath.Substring(assetIndex + 1);
         }
 
-
         private void OnInvalidPathError(FilePanelError error)
         {
             if (error == FilePanelError.InvalidPath)
@@ -304,5 +303,50 @@ namespace Bonsai.Designer
         {
             SaveMessage?.Invoke(this, "Tree Copied");
         }
+
+
+
+        //[MenuItem("Assets/ScriptableObj to Json", false, 100)]
+        //private static void ScriptableObj2Json()
+        //{
+        //    var obj = Selection.activeObject;
+        //    if (obj != null)
+        //    {
+        //        //Debug.LogError(Selection.activeObject.name);
+        //        if (obj is ScriptableObject)
+        //        {
+        //            var json = JsonUtility.ToJson(obj, true);
+
+        //            var path = AssetDatabase.GetAssetPath(obj);
+
+        //            if (path.StartsWith("Assets"))
+        //            {
+        //                path = Application.dataPath + path.Remove(0, 6) + ".json";
+        //            }
+        //            System.IO.File.WriteAllText(path, json);
+
+        //            AssetDatabase.Refresh();
+
+        //            //AssetDatabase.CreateAsset(text, path + ".json");
+        //        }
+        //    }
+        //}
+
+        //[MenuItem("Assets/Json to BehaviorTree", false, 100)]
+        //private static void Json2ScriptableObj()
+        //{
+        //    var obj = Selection.activeObject;
+        //    if (obj != null)
+        //    {
+        //        //Debug.LogError(Selection.activeObject.name);
+        //        if (obj is TextAsset _text)
+        //        {
+        //            var path = AssetDatabase.GetAssetPath(obj);
+        //            var _tree = ScriptableObject.CreateInstance<BehaviorTree>();
+        //            AssetDatabase.CreateAsset(_tree, path + ".asset");
+        //            JsonUtility.FromJsonOverwrite(_text.text, _tree);
+        //        }
+        //    }
+        //}
     }
 }

@@ -1,7 +1,7 @@
 ﻿
 using System;
 
-namespace Bonsai.Utility
+namespace Saro.BT.Utility
 {
     public class Result<TError, TValue>
     {

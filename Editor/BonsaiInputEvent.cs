@@ -1,7 +1,7 @@
 ﻿
 using UnityEngine;
 
-namespace Bonsai.Designer
+namespace Saro.BT.Designer
 {
     public class BonsaiInputEvent
     {

@@ -1,5 +1,5 @@
 ﻿
-namespace Bonsai.Designer
+namespace Saro.BT.Designer
 {
     public static class EditorNodeConnecting
     {

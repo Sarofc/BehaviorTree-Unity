@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Bonsai
+namespace Saro.BT
 {
     public class Blackboard : ScriptableObject, ISerializationCallbackReceiver
     {

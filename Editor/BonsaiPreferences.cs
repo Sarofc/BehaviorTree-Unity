@@ -4,7 +4,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace Bonsai.Designer
+namespace Saro.BT.Designer
 {
     // Register a SettingsProvider using IMGUI for the drawing framework:
     static class BeahviorTreeSettingsIMGUIRegister

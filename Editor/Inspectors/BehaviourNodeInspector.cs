@@ -5,7 +5,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace Bonsai.Designer
+namespace Saro.BT.Designer
 {
     /// <summary>
     /// All behaviour tree nodes will use this inspector so GUI changes are reflected immediately in the tree editor.

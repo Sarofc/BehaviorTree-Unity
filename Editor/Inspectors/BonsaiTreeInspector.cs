@@ -3,7 +3,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Bonsai.Designer
+namespace Saro.BT.Designer
 {
   [CustomEditor(typeof(BehaviorTree))]
   public class BonsaiTreeInspector : Editor

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Bonsai.Utility
+namespace Saro.BT.Utility
 {
     public static class MathExtensions
     {

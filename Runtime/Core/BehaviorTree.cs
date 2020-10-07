@@ -7,7 +7,9 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace Bonsai
+using Saro.BT.Utility;
+
+namespace Saro.BT
 {
 
     public class BehaviorTree : ScriptableObject
@@ -124,7 +126,7 @@ namespace Bonsai
 
         private void PreProcess()
         {
-            SetPostAndLevelOrders();
+            SetLevelOrders();
             mainIterator = new BehaviorIterator(this, 0);
             activeTimers = new UpdateList<Timer>();
 
@@ -140,13 +142,13 @@ namespace Bonsai
             }
         }
 
-        private void SetPostAndLevelOrders()
+        private void SetLevelOrders()
         {
-            int postOrderIndex = 0;
-            foreach (var node in TreeTraversal.PostOrder(Root))
-            {
-                node.postOrderIndex = postOrderIndex++;
-            }
+            //int postOrderIndex = 0;
+            //foreach (var node in TreeTraversal.PostOrder(Root))
+            //{
+            //    node.postOrderIndex = postOrderIndex++;
+            //}
 
             foreach ((BTNode node, int level) in TreeTraversal.LevelOrder(Root))
             {
@@ -210,15 +212,10 @@ namespace Bonsai
                     .Select(childIndex => GetIntanceVersion(clone, nodeSrc.GetChildAt(childIndex)))
                     .ToArray());
                 }
-                else if (nodeCopy is BTDecorator _decorator)
+                else if (nodeCopy is BTAuxiliary _decorator)
                 {
                     _decorator.SetChild(GetIntanceVersion(clone, nodeSrc.GetChildAt(0)));
                 }
-            }
-
-            foreach (var node in clone.nodes)
-            {
-                node.OnCopy();
             }
 
             return clone;
@@ -244,9 +241,9 @@ namespace Bonsai
             {
                 _composite.SetChildren(new BTNode[0]);
             }
-            else if (node is BTDecorator _decorator)
+            else if (node is BTAuxiliary _auxiliary)
             {
-                _decorator.SetChild(null);
+                _auxiliary.SetChild(null);
             }
         }
 

@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Bonsai.Utility
+namespace Saro.BT.Utility
 {
     public class FixedSizeStack<T> : IEnumerable<T>, IEnumerable
     {

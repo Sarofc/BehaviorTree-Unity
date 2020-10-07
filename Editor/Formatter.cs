@@ -1,7 +1,7 @@
 ﻿//using Bonsai.Core;
 using UnityEngine;
 
-namespace Bonsai.Designer
+namespace Saro.BT.Designer
 {
   /// <summary>
   /// Provides utilities to format the visual tree in editor.

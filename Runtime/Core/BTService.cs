@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace Bonsai
+using Saro.BT.Utility;
+
+namespace Saro.BT
 {
-    public abstract class BTService : BTDecorator
+    // TODO
+    public abstract class BTService : BTAuxiliary
     {
         [BTRunTimeValue]
         public Timer timer = new Timer();
-        public bool restartTimerOnEnter = true;
+        //public bool restartTimerOnEnter = true;
 
         public sealed override void OnStart()
         {
@@ -21,12 +24,12 @@ namespace Bonsai
         {
             Tree.AddTimer(timer);
 
-            if (timer.IsDone || restartTimerOnEnter)
+            if (timer.IsDone /*|| restartTimerOnEnter*/)
             {
                 timer.Start();
             }
 
-            base.OnEnter();
+            if(child != null) Iterator.Traverse(child);
         }
 
         public sealed override void OnExit()
@@ -41,21 +44,16 @@ namespace Bonsai
 
         protected abstract void ServiceTick();
 
+        public override bool IsValid()
+        {
+            return true;
+        }
+
         public override void Description(StringBuilder builder)
         {
-            if (timer.deviation == 0f)
-            {
-                builder.AppendFormat("Tick {0:0.00}s", timer.interval);
-            }
-            else
-            {
-                float lower = timer.interval - timer.deviation;
-                float upper = timer.interval + timer.deviation;
-                builder.AppendFormat("Tick {0:0.00}s - {1:0.00}s", lower, upper);
-            }
+            builder.AppendFormat("Tick every {0:0.00}s", timer.GetIntervalInfo()).AppendLine();
 
-            builder.AppendLine();
-            builder.Append(restartTimerOnEnter ? "Restart timer on enter" : "Resume timer on enter");
+            //builder.AppendLine(restartTimerOnEnter ? "Restart timer on enter" : "Resume timer on enter");
         }
     }
 
