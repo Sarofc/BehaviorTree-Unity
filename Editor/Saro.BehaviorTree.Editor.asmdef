@@ -1,5 +1,6 @@
 {
-    "name": "BehaviorTree.Editor",
+    "name": "Saro.BehaviorTree.Editor",
+    "rootNamespace": "",
     "references": [
         "GUID:9ca665f15bf24114ca07f91c752c5661"
     ],
