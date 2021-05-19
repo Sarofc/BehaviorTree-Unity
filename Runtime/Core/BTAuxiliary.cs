@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
@@ -8,23 +7,23 @@ namespace Saro.BT
     public abstract class BTAuxiliary : BTNode
     {
         [SerializeField]
-        protected BTNode child;
+        protected BTNode m_Child;
 
-        protected BTNode Child => child;
+        protected BTNode Child => m_Child;
 
         public void SetChild(BTNode node)
         {
-            child = node;
-            if (child != null)
+            m_Child = node;
+            if (m_Child != null)
             {
-                child.Parent = this;
-                child.childOrder = 0;
+                m_Child.Parent = this;
+                m_Child.childOrder = 0;
             }
         }
 
         public override void OnEnter()
         {
-            if (child) Iterator.Traverse(child);
+            if (m_Child) Iterator.Traverse(m_Child);
         }
 
         public sealed override void OnAbort(int childIndex)
@@ -43,20 +42,20 @@ namespace Saro.BT
 
         public override void OnCompositeParentExit()
         {
-            if (child != null && child.IsDecorator())
+            if (m_Child != null && m_Child.IsDecorator())
             {
-                child.OnCompositeParentExit();
+                m_Child.OnCompositeParentExit();
             }
         }
 
         public sealed override BTNode GetChildAt(int index)
         {
-            return child;
+            return m_Child;
         }
 
         public sealed override int ChildCount()
         {
-            return child != null ? 1 : 0;
+            return m_Child != null ? 1 : 0;
         }
 
         public sealed override int MaxChildCount()
@@ -66,7 +65,7 @@ namespace Saro.BT
 
         public override bool IsValid()
         {
-            return child != null;
+            return m_Child != null;
         }
 
         public override void Error(StringBuilder builder)

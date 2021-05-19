@@ -7,7 +7,7 @@ namespace Saro.BT.Utility
     public static class TypeExtensions
     {
 
-        public static readonly Dictionary<string, string> SimpleTypeNames = new Dictionary<string, string>()
+        public static readonly Dictionary<string, string> s_SimpleTypeNames = new Dictionary<string, string>()
         {
             { "Boolean", "bool"},
             { "Int32", "int"},
@@ -29,7 +29,7 @@ namespace Saro.BT.Utility
             }
             else
             {
-                if (SimpleTypeNames.TryGetValue(name, out string simple))
+                if (s_SimpleTypeNames.TryGetValue(name, out string simple))
                     name = simple;
             }
 

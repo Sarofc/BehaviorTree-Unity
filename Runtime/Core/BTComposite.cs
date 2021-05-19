@@ -8,19 +8,19 @@ namespace Saro.BT
     public abstract class BTComposite : BTNode
     {
         [SerializeField]
-        private BTNode[] children;
+        private BTNode[] m_Children;
 
-        public BTNode[] Children => children;
+        public BTNode[] Children => m_Children;
 
-        protected EStatus lastChildExitStatus;
+        protected EStatus m_LastChildExitStatus;
 
         public int CurrentChildIndex { get; private set; } = 0;
 
         public virtual BTNode CurrentChild()
         {
-            if (CurrentChildIndex < children.Length)
+            if (CurrentChildIndex < m_Children.Length)
             {
-                return children[CurrentChildIndex];
+                return m_Children[CurrentChildIndex];
             }
 
             return null;
@@ -39,11 +39,11 @@ namespace Saro.BT
 
         public void SetChildren(BTNode[] nodes)
         {
-            children = nodes;
-            for (int i = 0; i < children.Length; i++)
+            m_Children = nodes;
+            for (int i = 0; i < m_Children.Length; i++)
             {
-                children[i].childOrder = i;
-                children[i].Parent = this;
+                m_Children[i].childOrder = i;
+                m_Children[i].Parent = this;
             }
         }
 
@@ -55,7 +55,7 @@ namespace Saro.BT
         public override void OnChildExit(int childIndex, EStatus status)
         {
             CurrentChildIndex++;
-            lastChildExitStatus = status;
+            m_LastChildExitStatus = status;
         }
 
         public sealed override int MaxChildCount()
@@ -65,17 +65,17 @@ namespace Saro.BT
 
         public sealed override int ChildCount()
         {
-            return children.Length;
+            return m_Children.Length;
         }
 
         public sealed override BTNode GetChildAt(int index)
         {
-            return children[index];
+            return m_Children[index];
         }
 
         public override bool IsValid()
         {
-            return children != null && children.Length > 0;
+            return m_Children != null && m_Children.Length > 0;
         }
 
     }

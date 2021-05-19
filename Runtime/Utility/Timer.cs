@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Saro.BT.Utility
@@ -67,5 +66,4 @@ namespace Saro.BT.Utility
                 return interval.ToString();
         }
     }
-
 }

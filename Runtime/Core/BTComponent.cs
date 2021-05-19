@@ -7,16 +7,16 @@ namespace Saro.BT
     public class BTComponent : MonoBehaviour
     {
         [SerializeField]
-        private BehaviorTree treeAsset;
+        private BehaviorTree m_TreeAsset;
 
-        private BehaviorTree treeIntance;
+        private BehaviorTree m_TreeIntance;
 
         private void Awake()
         {
-            if (treeAsset)
+            if (m_TreeAsset)
             {
-                treeIntance = BehaviorTree.Clone(treeAsset);
-                treeIntance.actor = gameObject;
+                m_TreeIntance = BehaviorTree.Clone(m_TreeAsset);
+                m_TreeIntance.actor = gameObject;
             }
             else
             {
@@ -26,21 +26,21 @@ namespace Saro.BT
 
         private void Start()
         {
-            treeIntance.Start();
-            treeIntance.BeginTraversal();
+            m_TreeIntance.Start();
+            m_TreeIntance.BeginTraversal();
         }
 
         private void Update()
         {
-            treeIntance.Tick();
+            m_TreeIntance.Tick();
         }
 
         private void OnDestroy()
         {
-            Destroy(treeIntance);
+            Destroy(m_TreeIntance);
         }
 
-        public BehaviorTree Tree => treeIntance;
+        public BehaviorTree Tree => m_TreeIntance;
     }
 
 }

@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
-
 using UnityEngine;
 
 namespace Saro.BT
 {
-    public abstract class BTNode : ScriptableObject, IIterableNode<BTNode>
+    public abstract partial class BTNode : ScriptableObject, IIterableNode<BTNode>
     {
         /// <summary>
         /// 节点运行状态
@@ -18,7 +16,7 @@ namespace Saro.BT
             Running
         }
 
-        public const int kInvalidOrder = -1;
+        public const int k_InvalidOrder = -1;
 
         /// <summary>
         /// 树
@@ -40,7 +38,7 @@ namespace Saro.BT
 
         internal BehaviorTree treeOwner = null;
 
-        internal int preOrderIndex = kInvalidOrder;
+        internal int preOrderIndex = k_InvalidOrder;
 
         //internal int postOrderIndex = 0;
 
@@ -155,12 +153,12 @@ namespace Saro.BT
         [HideInInspector] public string comment;
         [HideInInspector] public Vector2 nodePosition;
 
-        public bool BreakPoint { get => breakPoint; set => breakPoint = value; }
-        [SerializeField] private bool breakPoint;
+        public bool BreakPoint { get => m_BreakPoint; set => m_BreakPoint = value; }
+        [SerializeField] private bool m_BreakPoint;
 
         public void OnBreakpoint()
         {
-            if (breakPoint) UnityEditor.EditorApplication.isPaused = breakPoint;
+            if (m_BreakPoint) UnityEditor.EditorApplication.isPaused = m_BreakPoint;
         }
 
 #endif

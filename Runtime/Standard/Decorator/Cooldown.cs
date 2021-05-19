@@ -26,7 +26,7 @@ namespace Saro.BT
         {
             IsActive = true;
 
-            if (timer.IsDone) Iterator.Traverse(child);
+            if (timer.IsDone) Iterator.Traverse(m_Child);
 
             if (abortType != AbortType.None)
             {

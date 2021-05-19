@@ -8,7 +8,7 @@ namespace Saro.BT
     {
         public override EStatus Run()
         {
-            if (lastChildExitStatus == EStatus.Failure) return EStatus.Failure;
+            if (m_LastChildExitStatus == EStatus.Failure) return EStatus.Failure;
 
             var next = CurrentChild();
 

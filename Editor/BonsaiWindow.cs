@@ -99,6 +99,8 @@ namespace Saro.BT.Designer
 
             DrawToolbar();
             UpdateWindowTitle();
+
+            Repaint();
         }
 
         void Update()

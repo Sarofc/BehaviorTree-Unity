@@ -249,6 +249,11 @@ namespace Saro.BT.Designer
             // Convert the body rect from canvas to screen space.
             portRect.position = t.CanvasToScreenSpace(portRect.position);
             GUI.DrawTexture(portRect, BonsaiPreferences.Instance.portTexture, ScaleMode.StretchToFill);
+
+            if (portRect.Contains(Event.current.mousePosition))
+            {
+                GUI.Label(portRect, text: null, style: "LightmapEditorSelectedHighlight");
+            }
         }
 
         public static void DrawNodeConnections(CanvasTransform t, BonsaiNode node)

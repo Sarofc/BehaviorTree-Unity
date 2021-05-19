@@ -9,7 +9,7 @@ namespace Saro.BT
     {
         public override EStatus Run()
         {
-            if (lastChildExitStatus == EStatus.Success)
+            if (m_LastChildExitStatus == EStatus.Success)
             {
                 return EStatus.Success;
             }

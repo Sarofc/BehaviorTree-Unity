@@ -14,17 +14,17 @@ namespace Saro.BT
 
     public class BehaviorTree : ScriptableObject
     {
-        private BehaviorIterator mainIterator;
+        private BehaviorIterator m_MainIterator;
 
-        private UpdateList<Timer> activeTimers;
+        private UpdateList<Timer> m_ActiveTimers;
 
-        private bool isTreeInitialized = false;
+        private bool m_IsTreeInitialized = false;
 
         public Blackboard blackboard;
 
-        public BTNode[] Nodes => nodes;
+        public BTNode[] Nodes => m_Nodes;
         [SerializeField]
-        private BTNode[] nodes = { };
+        private BTNode[] m_Nodes = { };
 
         /// <summary>
         /// tree owner
@@ -32,7 +32,7 @@ namespace Saro.BT
         public object actor;
         public int Height { get; internal set; } = 0;
 
-        public BTNode Root => nodes.Length == 0 ? null : nodes[0];
+        public BTNode Root => m_Nodes.Length == 0 ? null : m_Nodes[0];
 
         public void Start()
         {
@@ -44,28 +44,28 @@ namespace Saro.BT
             // TODO !!! loop all nodes 4 times
             PreProcess();
 
-            foreach (var node in nodes)
+            foreach (var node in m_Nodes)
             {
                 node.OnStart();
             }
 
-            isTreeInitialized = true;
+            m_IsTreeInitialized = true;
         }
 
         public void Tick()
         {
-            if (isTreeInitialized && mainIterator.IsRunning)
+            if (m_IsTreeInitialized && m_MainIterator.IsRunning)
             {
                 TickTimers();
-                mainIterator.Tick();
+                m_MainIterator.Tick();
             }
         }
 
         public void BeginTraversal()
         {
-            if (isTreeInitialized && !mainIterator.IsRunning)
+            if (m_IsTreeInitialized && !m_MainIterator.IsRunning)
             {
-                mainIterator.Traverse(Root);
+                m_MainIterator.Traverse(Root);
             }
         }
 
@@ -76,9 +76,9 @@ namespace Saro.BT
 
         public void SetNodes(IEnumerable<BTNode> nodes)
         {
-            this.nodes = nodes.ToArray();
+            this.m_Nodes = nodes.ToArray();
             int preOrderIndex = 0;
-            foreach (var node in this.nodes)
+            foreach (var node in this.m_Nodes)
             {
                 node.treeOwner = this;
                 node.preOrderIndex = preOrderIndex++;
@@ -97,38 +97,38 @@ namespace Saro.BT
 
         public void AddTimer(Timer timer)
         {
-            activeTimers.Add(timer);
+            m_ActiveTimers.Add(timer);
         }
 
         public void RemoveTimer(Timer timer)
         {
-            activeTimers.Remove(timer);
+            m_ActiveTimers.Remove(timer);
         }
 
         private void TickTimers()
         {
-            var timers = activeTimers.Data;
-            var count = activeTimers.Data.Count;
+            var timers = m_ActiveTimers.Data;
+            var count = m_ActiveTimers.Data.Count;
             for (int i = 0; i < count; i++)
             {
                 timers[i].Tick(Time.deltaTime);
             }
 
-            activeTimers.AddAndRemoveQueued();
+            m_ActiveTimers.AddAndRemoveQueued();
         }
 
-        public int ActiveTimerCount => activeTimers.Data.Count;
+        public int ActiveTimerCount => m_ActiveTimers.Data.Count;
 
         public IEnumerable<T> GetNodes<T>() where T : BTNode
         {
-            return nodes.Select(node => node as T).Where(casted => casted != null);
+            return m_Nodes.Select(node => node as T).Where(casted => casted != null);
         }
 
         private void PreProcess()
         {
             SetLevelOrders();
-            mainIterator = new BehaviorIterator(this, 0);
-            activeTimers = new UpdateList<Timer>();
+            m_MainIterator = new BehaviorIterator(this, 0);
+            m_ActiveTimers = new UpdateList<Timer>();
 
             SetRootIteratorReferences();
         }
@@ -138,7 +138,7 @@ namespace Saro.BT
             //foreach (var item in TreeTraversal.PreOrderSkipChildren(Root, n => n is ParallelComposite))
             foreach (var node in TreeTraversal.PreOrder(Root))
             {
-                node.Iterator = mainIterator;
+                node.Iterator = m_MainIterator;
             }
         }
 
@@ -159,17 +159,17 @@ namespace Saro.BT
 
         public bool IsRunning()
         {
-            return mainIterator != null && mainIterator.IsRunning;
+            return m_MainIterator != null && m_MainIterator.IsRunning;
         }
 
         public bool IsInitialized()
         {
-            return isTreeInitialized;
+            return m_IsTreeInitialized;
         }
 
         public BTNode.EStatus LastStatus()
         {
-            return mainIterator.LastExecutedStatus;
+            return m_MainIterator.LastExecutedStatus;
         }
 
         /// <summary>
@@ -181,7 +181,7 @@ namespace Saro.BT
         public static BTNode GetIntanceVersion(BehaviorTree copy, BTNode nodeSrc)
         {
             var index = nodeSrc.preOrderIndex;
-            return copy.nodes[index];
+            return copy.m_Nodes[index];
         }
 
         public static BehaviorTree Clone(BehaviorTree src)
@@ -192,7 +192,7 @@ namespace Saro.BT
             {
                 clone.blackboard = Instantiate(src.blackboard);
             }
-            clone.SetNodes(src.nodes.Select(n => Instantiate(n)));
+            clone.SetNodes(src.m_Nodes.Select(n => Instantiate(n)));
 
             //foreach (var item in clone.Nodes)
             //{
@@ -200,10 +200,10 @@ namespace Saro.BT
             //}
             //throw new Exception();
 
-            int maxCloneNodeCount = clone.nodes.Length;
+            int maxCloneNodeCount = clone.m_Nodes.Length;
             for (int i = 0; i < maxCloneNodeCount; i++)
             {
-                var nodeSrc = src.nodes[i];
+                var nodeSrc = src.m_Nodes[i];
                 var nodeCopy = GetIntanceVersion(clone, nodeSrc);
                 if (nodeCopy is BTComposite _composite)
                 {
@@ -223,16 +223,16 @@ namespace Saro.BT
 
         public void ClearStructure()
         {
-            foreach (var node in nodes)
+            foreach (var node in m_Nodes)
             {
                 ClearChildrenStructure(node);
-                node.preOrderIndex = BTNode.kInvalidOrder;
+                node.preOrderIndex = BTNode.k_InvalidOrder;
                 node.childOrder = 0;
                 node.Parent = null;
                 node.treeOwner = null;
             }
 
-            nodes = new BTNode[0];
+            m_Nodes = new BTNode[0];
         }
 
         private void ClearChildrenStructure(BTNode node)

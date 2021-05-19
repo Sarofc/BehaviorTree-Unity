@@ -14,19 +14,12 @@ namespace Saro.BT
         public Type type;
 
         [SerializeField]
-        private string typename;
+        private string m_Typename;
 
-        private Action<Blackboard.KeyEvent> OnBlackboardChanged;
+        //private Action<Blackboard.KeyEvent> OnBlackboardChanged;
 
         public override void OnStart()
         {
-            OnBlackboardChanged = delegate (Blackboard.KeyEvent e)
-            {
-                if (e.Key == key)
-                {
-                    Evaluate();
-                }
-            };
         }
 
         public override bool Condition()
@@ -42,14 +35,14 @@ namespace Saro.BT
 
         public void OnBeforeSerialize()
         {
-            if (type != null) typename = type.AssemblyQualifiedName;
-            else typename = "";
+            if (type != null) m_Typename = type.AssemblyQualifiedName;
+            else m_Typename = "";
         }
 
         public void OnAfterDeserialize()
         {
-            if (string.IsNullOrEmpty(typename)) type = null;
-            else type = Type.GetType(typename);
+            if (string.IsNullOrEmpty(m_Typename)) type = null;
+            else type = Type.GetType(m_Typename);
         }
 
         public override void OnObserverBegin()
@@ -74,6 +67,14 @@ namespace Saro.BT
             else
             {
                 builder.AppendFormat("Blackboard key {0} is {1}", key, Saro.BT.Utility.TypeExtensions.NiceName(type));
+            }
+        }
+
+        private void OnBlackboardChanged(Blackboard.KeyEvent evt)
+        {
+            if (evt.Key == key)
+            {
+                Evaluate();
             }
         }
     }

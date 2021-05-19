@@ -173,7 +173,7 @@ namespace Saro.BT.Designer
             // Tree.ClearStructure unsets the index and is only set in Tree.SetNodes
             // for nodes under the root.
             canvas.Tree.unusedNodes = canvasBehaviours.Where(
-              b => b.PreOrderIndex == BTNode.kInvalidOrder).ToList();
+              b => b.PreOrderIndex == BTNode.k_InvalidOrder).ToList();
 
             SaveTreeMetaData(meta, canvas);
             AssetDatabase.SaveAssets();

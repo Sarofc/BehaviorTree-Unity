@@ -29,7 +29,7 @@ namespace Saro.BT
                 timer.Start();
             }
 
-            if(child != null) Iterator.Traverse(child);
+            if(m_Child != null) Iterator.Traverse(m_Child);
         }
 
         public sealed override void OnExit()

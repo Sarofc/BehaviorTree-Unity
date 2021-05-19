@@ -12,26 +12,26 @@ namespace Saro.BT
         public int loopCount = 1;
 
         [BTRunTimeValue]
-        private int loopCounter;
+        private int m_LoopCounter;
 
         public override void OnEnter()
         {
-            loopCounter = 0;
+            m_LoopCounter = 0;
         }
 
         public override EStatus Run()
         {
             if (loopCount == -1)
             {
-                Iterator.Traverse(child);
+                Iterator.Traverse(m_Child);
                 return EStatus.Running;
             }
             else
             {
-                if (loopCounter < loopCount)
+                if (m_LoopCounter < loopCount)
                 {
-                    loopCounter++;
-                    Iterator.Traverse(child);
+                    m_LoopCounter++;
+                    Iterator.Traverse(m_Child);
                     return EStatus.Running;
                 }
                 else

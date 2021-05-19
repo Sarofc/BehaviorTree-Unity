@@ -15,8 +15,8 @@ namespace Saro.BT.Designer
         private static StringBuilder s_Text = new StringBuilder(1024);
 
         public BonsaiNode Parent { get; private set; }
-        private readonly List<BonsaiNode> children = new List<BonsaiNode>();
-        public IReadOnlyList<BonsaiNode> Children { get { return children; } }
+        private readonly List<BonsaiNode> m_Children = new List<BonsaiNode>();
+        public IReadOnlyList<BonsaiNode> Children { get { return m_Children; } }
 
         private Rect rectPosition;
 
@@ -183,32 +183,32 @@ namespace Saro.BT.Designer
 
         private void OrphanChildren()
         {
-            foreach (BonsaiNode child in children)
+            foreach (BonsaiNode child in m_Children)
             {
                 child.Parent = null;
             }
 
-            children.Clear();
+            m_Children.Clear();
         }
 
         public BonsaiNode GetChildAt(int index)
         {
-            return children.Count != 0 ? children[index] : null;
+            return m_Children.Count != 0 ? m_Children[index] : null;
         }
 
         public int ChildCount()
         {
-            return children.Count;
+            return m_Children.Count;
         }
 
         public int IndexOf(BonsaiNode child)
         {
-            return children.IndexOf(child);
+            return m_Children.IndexOf(child);
         }
 
         public bool Contains(BonsaiNode child)
         {
-            return children.Contains(child);
+            return m_Children.Contains(child);
         }
 
         public bool IsOrphan()
@@ -221,7 +221,7 @@ namespace Saro.BT.Designer
             // Remove from previous parent.
             if (Parent != null)
             {
-                Parent.children.Remove(this);
+                Parent.m_Children.Remove(this);
             }
 
             // Register with new parent.
@@ -229,14 +229,14 @@ namespace Saro.BT.Designer
             {
                 if (newParent.behaviour is BTComposite)
                 {
-                    newParent.children.Add(this);
+                    newParent.m_Children.Add(this);
                 }
 
                 else if (newParent.behaviour is BTAuxiliary)
                 {
                     // Replace single child.
                     newParent.OrphanChildren();
-                    newParent.children.Add(this);
+                    newParent.m_Children.Add(this);
                 }
 
                 // else: Tasks cannot have children added.
@@ -253,7 +253,7 @@ namespace Saro.BT.Designer
         /// </summary>
         public void SortChildren()
         {
-            children.Sort((BonsaiNode left, BonsaiNode right) => left.Center.x.CompareTo(right.Center.x));
+            m_Children.Sort((BonsaiNode left, BonsaiNode right) => left.Center.x.CompareTo(right.Center.x));
         }
 
         /// <summary>
@@ -265,7 +265,7 @@ namespace Saro.BT.Designer
             float nearestY = float.MaxValue;
             float nearestDist = float.MaxValue;
 
-            foreach (BonsaiNode child in children)
+            foreach (BonsaiNode child in m_Children)
             {
                 Vector2 childPosition = child.RectPositon.position;
                 Vector2 toChild = childPosition - Position;
@@ -292,7 +292,7 @@ namespace Saro.BT.Designer
             minX = Center.x;
             maxX = Center.x;
 
-            foreach (BonsaiNode child in children)
+            foreach (BonsaiNode child in m_Children)
             {
                 float x = child.Center.x;
 

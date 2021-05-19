@@ -6,7 +6,7 @@ namespace Saro.BT.Utility
 {
     public class FixedSizeStack<T> : IEnumerable<T>, IEnumerable
     {
-        private readonly T[] container;
+        private readonly T[] m_Container;
 
         public int Capacity { get; private set; }
         public int Count { get; private set; }
@@ -15,15 +15,15 @@ namespace Saro.BT.Utility
         {
             Count = 0;
             Capacity = capacity;
-            this.container = new T[capacity];
+            this.m_Container = new T[capacity];
         }
 
         public void Clear()
         {
             Count = 0;
-            for (int i = 0; i < container.Length; i++)
+            for (int i = 0; i < m_Container.Length; i++)
             {
-                container[i] = default;
+                m_Container[i] = default;
             }
         }
 
@@ -34,27 +34,27 @@ namespace Saro.BT.Utility
 
         public T Peek()
         {
-            return container[Count - 1];
+            return m_Container[Count - 1];
         }
 
         public T Pop()
         {
-            return container[--Count];
+            return m_Container[--Count];
         }
 
         public void Push(T value)
         {
-            container[Count++] = value;
+            m_Container[Count++] = value;
         }
 
         public T this[int index]
         {
-            get { return container[index]; }
+            get { return m_Container[index]; }
         }
 
         public T GetValueAt(int index)
         {
-            return container[index];
+            return m_Container[index];
         }
 
         public Enumerator GetEnumerator()

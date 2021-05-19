@@ -25,37 +25,37 @@ namespace Saro.BT
             public object Value { get; }
         }
 
-        private readonly Dictionary<string, object> memory = new Dictionary<string, object>();
+        private readonly Dictionary<string, object> m_Memory = new Dictionary<string, object>();
 
-        public IReadOnlyDictionary<string, object> Memory => memory;
+        public IReadOnlyDictionary<string, object> Memory => m_Memory;
 
         [SerializeField]
-        private List<string> keys = new List<string>();
+        private List<string> m_Keys = new List<string>();
 
-        private readonly List<Action<KeyEvent>> observers = new List<Action<KeyEvent>>();
+        private readonly List<Action<KeyEvent>> m_Observers = new List<Action<KeyEvent>>();
 
         public void Set(string key)
         {
-            if (!memory.ContainsKey(key))
+            if (!m_Memory.ContainsKey(key))
             {
-                memory.Add(key, null);
+                m_Memory.Add(key, null);
                 NotifyObservers(new KeyEvent(EventType.Add, key, null));
             }
         }
 
         public void Set(string key, object value)
         {
-            if (!memory.ContainsKey(key))
+            if (!m_Memory.ContainsKey(key))
             {
-                memory.Add(key, value);
+                m_Memory.Add(key, value);
                 NotifyObservers(new KeyEvent(EventType.Add, key, value));
             }
             else
             {
-                var old = memory[key];
+                var old = m_Memory[key];
                 if ((old == null && value != null) || (old != null && !old.Equals(value)))
                 {
-                    memory[key] = value;
+                    m_Memory[key] = value;
                     NotifyObservers(new KeyEvent(EventType.Change, key, value));
                 }
             }
@@ -72,7 +72,7 @@ namespace Saro.BT
         {
             if (Contains(key))
             {
-                return memory[key];
+                return m_Memory[key];
             }
 
             return null;
@@ -80,7 +80,7 @@ namespace Saro.BT
 
         public void Remove(string key)
         {
-            if (memory.Remove(key))
+            if (m_Memory.Remove(key))
             {
                 NotifyObservers(new KeyEvent(EventType.Remove, key, null));
             }
@@ -90,66 +90,66 @@ namespace Saro.BT
         {
             if (Contains(key))
             {
-                memory[key] = null;
+                m_Memory[key] = null;
                 NotifyObservers(new KeyEvent(EventType.Change, key, null));
             }
         }
 
         public void Clear()
         {
-            memory.Clear();
+            m_Memory.Clear();
         }
 
         public bool Contains(string key)
         {
-            return memory.ContainsKey(key);
+            return m_Memory.ContainsKey(key);
         }
 
         public bool IsSet(string key)
         {
-            return Contains(key) && memory[key] != null;
+            return Contains(key) && m_Memory[key] != null;
         }
 
         public bool IsUnset(string key)
         {
-            return Contains(key) && memory[key] == null;
+            return Contains(key) && m_Memory[key] == null;
         }
 
         public void AddObserver(Action<KeyEvent> action)
         {
-            observers.Add(action);
+            m_Observers.Add(action);
         }
 
         public void RemoveObserver(Action<KeyEvent> action)
         {
-            observers.Remove(action);
+            m_Observers.Remove(action);
         }
 
-        public int ObserverCount => observers.Count;
+        public int ObserverCount => m_Observers.Count;
 
-        public int Count => memory.Count;
+        public int Count => m_Memory.Count;
 
         public void OnAfterDeserialize()
         {
-            memory.Clear();
-            foreach (var key in keys)
+            m_Memory.Clear();
+            foreach (var key in m_Keys)
             {
-                memory.Add(key, null);
+                m_Memory.Add(key, null);
             }
         }
 
         public void OnBeforeSerialize()
         {
-            keys.Clear();
-            foreach (var key in memory.Keys)
+            m_Keys.Clear();
+            foreach (var key in m_Memory.Keys)
             {
-                keys.Add(key);
+                m_Keys.Add(key);
             }
         }
 
         private void NotifyObservers(KeyEvent e)
         {
-            foreach (var action in observers)
+            foreach (var action in m_Observers)
             {
                 action(e);
             }
